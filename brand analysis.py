@@ -1,6 +1,6 @@
 import os
 import logging
-
+import pandas as pd
 
 logging.basicConfig(
     level=logging.DEBUG, 
@@ -10,18 +10,24 @@ logging.basicConfig(
 
 
 PATH_TO_CURRENT_DIR = os.getcwd()
-NAME_OF_THE_DATA_DIR = 'brand data dir'
-PATH_TO_THE_DATA_DIR = PATH_TO_CURRENT_DIR+'\\'+NAME_OF_THE_DATA_DIR
+BRAND_DATA_FILENAME = 'Бренды под АВР.xlsx'
+INPUT_DATA_FILENAME = 'Таблица Расшифровки.xlsx'
+BRAND_DATA_FILE_PATH = PATH_TO_CURRENT_DIR+BRAND_DATA_FILENAME
+INPUT_DATA_FILE_PATH = PATH_TO_CURRENT_DIR+INPUT_DATA_FILENAME
 
 logging.debug(PATH_TO_CURRENT_DIR)
-logging.debug(PATH_TO_THE_DATA_DIR)
 
 
 def main_algorith():
-    pass
+    brand_datatable = pd.read_excel(BRAND_DATA_FILENAME,)
+    print(brand_datatable)
+    logging.info(brand_datatable)
+
 
 
 if __name__ == '__main__':
+    print("START________________________________________")
     logging.debug("START________________________________________")
-    main_algorith
+    main_algorith()
     logging.debug("FINISH_______________________________________")
+    print("FINISH_______________________________________")
