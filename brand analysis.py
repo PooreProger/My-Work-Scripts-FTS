@@ -13,9 +13,10 @@ logging.basicConfig(
 PATH_TO_CURRENT_DIR = os.getcwd()
 BRAND_DATA_FILENAME = 'Бренды под АВР.xlsx'
 INPUT_DATA_FILENAME = 'Таблица ввода данных.xlsx'
-OUTPUT_DATA_FILENAME = 'Вывод расшифрованных данных.xls'
+OUTPUT_DATA_FILENAME = 'Вывод расшифрованных данных.xlsx'
 BRAND_DATA_FILE_PATH = PATH_TO_CURRENT_DIR+BRAND_DATA_FILENAME
 INPUT_DATA_FILE_PATH = PATH_TO_CURRENT_DIR+INPUT_DATA_FILENAME
+OUTPUT_DATA_FILE_PATH = PATH_TO_CURRENT_DIR+OUTPUT_DATA_FILENAME
 
 logging.debug(PATH_TO_CURRENT_DIR)
 
@@ -103,7 +104,7 @@ def main_algorith():
                     changed_several_brand_name_list = []
                     several_brand_names_for_removal = []
                     logging.debug(several_brand_name_list)
-                    if len(several_brand_name_list) > 1 and several_brand_name_list != None:
+                    if len(several_brand_name_list) > 1 and several_brand_name_list != None and isinstance(several_brand_name_list, list):
                         for one_of_the_brand_names_index in range(0, len(several_brand_name_list)):
                             one_of_the_brand_names = several_brand_name_list[one_of_the_brand_names_index]
                             if exception_brand_name == one_of_the_brand_names and one_of_the_brand_names != None:
@@ -112,12 +113,21 @@ def main_algorith():
                             for brand_name_for_removal in several_brand_names_for_removal:
                                 logging.debug(f"Removing: {brand_name_for_removal} from: {several_brand_name_list}")
                                 several_brand_name_list.remove(brand_name_for_removal)
+                    logging.debug("Should we make str() out of list():"+f"{several_brand_name_list}")
+                    if several_brand_name_list != None and isinstance(several_brand_name_list, list):
+                        logging.debug("     Making str() out of list():"+f"{several_brand_name_list}")
+                        input_datatable.at[inputDT_RowIndex, "Бренд"] = str(several_brand_name_list[0])
+                        logging.debug(f"     Result of remaking:{input_datatable.at[inputDT_RowIndex, 'Бренд']}")
+                        
         else:
             pass
     logging.debug(f"Result:\n {input_datatable}")
     logging.debug("Analysis done.")
 
-    logging.debug("Saving Resultes")
+    logging.debug("Saving Resultes...")
+    logging.debug(f"Saving input datatable to {OUTPUT_DATA_FILENAME}")
+    input_datatable.to_excel(OUTPUT_DATA_FILENAME)
+    logging.debug("Results are saved.")
 
 
 if __name__ == '__main__':
