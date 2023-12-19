@@ -13,6 +13,8 @@ logging.basicConfig(
 PATH_TO_CURRENT_DIR = os.getcwd()
 BRAND_DATA_FILENAME = 'Бренды под АВР.xlsx'
 INPUT_DATA_FILENAME = 'Таблица ввода данных.xlsx'
+INPUT_DATA_SHEETNAME = 'Лист Ввода'
+BRAND_DATA_SHEET_NAME = 'Реестр Брендов для Расшифровки'
 OUTPUT_DATA_FILENAME = 'Вывод расшифрованных данных.xlsx'
 BRAND_DATA_FILE_PATH = PATH_TO_CURRENT_DIR+BRAND_DATA_FILENAME
 INPUT_DATA_FILE_PATH = PATH_TO_CURRENT_DIR+INPUT_DATA_FILENAME
@@ -23,9 +25,9 @@ logging.debug(PATH_TO_CURRENT_DIR)
 
 def main_algorith():
     logging.debug("Loading datasheets...")
-    brand_datatable = pd.read_excel(BRAND_DATA_FILENAME)
+    brand_datatable = pd.read_excel(INPUT_DATA_FILENAME, BRAND_DATA_SHEET_NAME)
     logging.info(f"Brand sheet:\n{brand_datatable}")
-    raw_input_datatable = pd.read_excel(INPUT_DATA_FILENAME)
+    raw_input_datatable = pd.read_excel(INPUT_DATA_FILENAME, INPUT_DATA_SHEETNAME)
     logging.info(f"Raw input sheet:\n{raw_input_datatable}")
     logging.debug("Datasheets loaded.")
 
