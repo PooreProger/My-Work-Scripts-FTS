@@ -38,7 +38,7 @@ def main_algorith():
     raw_input_datatable.insert(1, 'Сумма', raw_input_datatable.iloc[:, 1:].sum(axis=1))
     raw_input_datatable.insert(0, 'Бренд', None)
     input_datatable = raw_input_datatable[raw_input_datatable['Сумма'] != 0]
-    input_datatable.reset_index()
+    input_datatable.index = input_datatable.index + 2
     logging.info(f"Cleared input sheet:\n{input_datatable}")
     # result_datatable = pd.DataFrame({})
     logging.debug("Data've been cleared.")
@@ -67,7 +67,7 @@ def main_algorith():
             
             for brand_name in brand_names:
                 brand_name = str(brand_name).lower().strip()
-                isMatched = f' {brand_name} ' in f' {input_brand_name} '
+                isMatched = f'{brand_name}' in f'{input_brand_name}'
                 # isMatched = re.search(rf' {input_brand_name} ', fr' {brand_name} ')
                 # if isMatched is None:
                 #     isMatched = re.search(rf'\W{input_brand_name}\W', rf' \W{brand_name}\W ')
@@ -104,15 +104,17 @@ def main_algorith():
                     changed_several_brand_name_list = []
                     several_brand_names_for_removal = []
                     logging.debug(several_brand_name_list)
-                    if len(several_brand_name_list) > 1 and several_brand_name_list != None and isinstance(several_brand_name_list, list):
+                    if several_brand_name_list != None and len(several_brand_name_list) > 1 and isinstance(several_brand_name_list, list):
                         for one_of_the_brand_names_index in range(0, len(several_brand_name_list)):
                             one_of_the_brand_names = several_brand_name_list[one_of_the_brand_names_index]
                             if exception_brand_name == one_of_the_brand_names and one_of_the_brand_names != None:
                                 several_brand_names_for_removal.append(brand_main_name)
                         if len(several_brand_names_for_removal) > 0:
                             for brand_name_for_removal in several_brand_names_for_removal:
-                                logging.debug(f"Removing: {brand_name_for_removal} from: {several_brand_name_list}")
-                                several_brand_name_list.remove(brand_name_for_removal)
+                                try:
+                                    logging.debug(f"Removing: {brand_name_for_removal} from: {several_brand_name_list}")
+                                    several_brand_name_list.remove(brand_name_for_removal)
+                                except: pass
                     logging.debug("Should we make str() out of list():"+f"{several_brand_name_list}")
                     if several_brand_name_list != None and isinstance(several_brand_name_list, list):
                         logging.debug("     Making str() out of list():"+f"{several_brand_name_list}")
@@ -122,11 +124,21 @@ def main_algorith():
         else:
             pass
     logging.debug(f"Result:\n {input_datatable}")
+    
     logging.debug("Analysis done.")
 
     logging.debug("Saving Resultes...")
     logging.debug(f"Saving input datatable to {OUTPUT_DATA_FILENAME}")
-    input_datatable.to_excel(OUTPUT_DATA_FILENAME)
+    output_datatable = input_datatable
+    output_full_datable = output_datatable
+    output_full_datable.to_excel(OUTPUT_DATA_FILENAME, "Расшифровка ввода")
+    logging.info(f"Grouped and summed data:\n{input_datatable}")
+    output_aggregated_datatable = output_datatable[['Бренд', 'Сумма']].groupby('Бренд')['Сумма'].sum()
+    logging.debug(f"Aggregated data:\n{output_aggregated_datatable}")
+    
+    with pd.ExcelWriter(OUTPUT_DATA_FILENAME, mode='a') as writer:
+        output_aggregated_datatable.to_excel(writer, 'Вывод')
+
     logging.debug("Results are saved.")
 
 
