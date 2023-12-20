@@ -4,7 +4,7 @@ import pandas as pd
 import re
 
 logging.basicConfig(
-    level=logging.DEBUG, 
+    level=logging.ERROR, 
     filename="brand logz.log", 
     encoding='utf-8', 
     format='%(asctime)s %(levelname)s %(message)s')
@@ -130,16 +130,17 @@ def main_algorith():
     logging.debug("Analysis done.")
 
     logging.debug("Saving Resultes...")
-    logging.debug(f"Saving input datatable to {OUTPUT_DATA_FILENAME}")
     output_datatable = input_datatable
     output_full_datable = output_datatable
-    output_full_datable.to_excel(OUTPUT_DATA_FILENAME, "Расшифровка ввода")
-    logging.info(f"Grouped and summed data:\n{input_datatable}")
+    logging.debug(f"Saving input datatable to {OUTPUT_DATA_FILENAME}")
     output_aggregated_datatable = output_datatable[['Бренд', 'Сумма']].groupby('Бренд')['Сумма'].sum()
+    output_aggregated_datatable.to_excel(OUTPUT_DATA_FILENAME, 'Вывод')
     logging.debug(f"Aggregated data:\n{output_aggregated_datatable}")
-    
+
+
+    logging.info(f"Grouped and summed data:\n{input_datatable}")
     with pd.ExcelWriter(OUTPUT_DATA_FILENAME, mode='a') as writer:
-        output_aggregated_datatable.to_excel(writer, 'Вывод')
+        output_full_datable.to_excel(writer, 'Расшифровка ввода')
 
     logging.debug("Results are saved.")
 
