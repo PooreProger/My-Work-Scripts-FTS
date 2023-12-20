@@ -151,4 +151,3 @@ if __name__ == '__main__':
     main_algorith()
     logging.debug("FINISHED_______________________________________")
     print("FINISHED_______________________________________")
-    input("Press 'Enter' to Exit")
