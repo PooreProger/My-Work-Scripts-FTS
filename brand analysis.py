@@ -57,11 +57,11 @@ def main_algorith():
             brand_names.append(brand_second_name)
         if brand_datatable.iat[brandDT_RowIndex, 2] != "nan":
             brand_currupted_names = brand_datatable.iloc[brandDT_RowIndex, 2]
-            brand_list_of_currupted_names = brand_currupted_names.split(",")
+            brand_list_of_currupted_names = brand_currupted_names.split(", ")
             brand_names.extend(brand_list_of_currupted_names)
         list_exception_words_for_brand= []
         if brand_datatable.iat[brandDT_RowIndex, 3] != "nan" and type(brand_datatable.iat[brandDT_RowIndex, 3]) is str:
-            list_exception_words_for_brand = str(brand_datatable.iloc[brandDT_RowIndex, 3]).lower().split(",")
+            list_exception_words_for_brand = str(brand_datatable.iloc[brandDT_RowIndex, 3]).lower().split(", ")
             # print(list_exception_words_for_brand)
         
 
