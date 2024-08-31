@@ -118,9 +118,8 @@ def main_algorith():
             for exception_brand_name in exception_brand_names_list:
                 for inputDT_RowIndex in input_datatable.index:
                     several_brand_name_list = input_datatable.at[inputDT_RowIndex, "Бренд"]
-                    if isinstance(several_brand_name_list, list):
-                        pass
-                    else: several_brand_name_list.split(", ")
+                    if isinstance(several_brand_name_list, str):
+                        several_brand_name_list.split(", ")
                     logging.debug(f" Comparing exception: {exception_brand_name} to value in Row Index: {inputDT_RowIndex}: {several_brand_name_list}")  # , from Data Table:\n{input_datatable}")
                     changed_several_brand_name_list = []
                     several_brand_names_for_removal = []
@@ -161,12 +160,14 @@ def main_algorith():
     logging.debug("Analysis done.")
 
     logging.debug("Saving Resultes...")
-    output_datatable = input_datatable
-    output_full_datable = output_datatable
+    raw_output_datatable = input_datatable
+    output_full_datable = raw_output_datatable
     logging.debug(f"Saving input datatable to {OUTPUT_DATA_FILENAME}")
-    output_aggregated_datatable = output_datatable[['Бренд', 'Сумма']].groupby('Бренд')['Сумма'].sum()
-    output_aggregated_datatable.to_excel(OUTPUT_DATA_FILENAME, 'Вывод')
-    logging.debug(f"Aggregated data:\n{output_aggregated_datatable}")
+    output_aggregated_datatable = raw_output_datatable[['Бренд', 'Сумма']].groupby('Бренд')['Сумма'].sum()
+    # output_filtered_datatable = output_aggregated_datatable.loc[output_aggregated_datatable['Сумма'] > 0]
+    output_datatable = output_aggregated_datatable
+    output_datatable.to_excel(OUTPUT_DATA_FILENAME, 'Вывод')
+    logging.debug(f"Output data:\n{output_datatable}")
 
 
     logging.info(f"Grouped and summed data:\n{input_datatable}")
