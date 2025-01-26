@@ -10,7 +10,7 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s')
 
 
-PATH_TO_CURRENT_DIR = os.getcwd()
+PATH_TO_CURRENT_DIR = os.path.dirname(__file__)
 BRAND_DATA_FILENAME = 'Бренды под АВР.xlsx'
 INPUT_DATA_FILENAME = 'Таблица ввода данных.xlsx'
 INPUT_DATA_SHEETNAME = 'Лист Ввода'
